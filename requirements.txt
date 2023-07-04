@@ -1,4 +1,8 @@
+matplotlib
+numpy
+pandas
+scikit_learn
 streamlit
-transformers
-torch
-streamlit-ext
+tensorflow==2.8.4
+tensorflow_probability
+click==8.0.4
