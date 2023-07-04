@@ -1,4 +1,3 @@
-pip install streamlit-ext
 import streamlit as st
 import streamlit_ext as ste
 
