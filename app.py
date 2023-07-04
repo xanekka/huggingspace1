@@ -1,47 +1,20 @@
-import easyocr as ocr  #OCR
-import streamlit as st  #Web App
-from PIL import Image #Image Processing
-import numpy as np #Image Processing 
+import streamlit as st
+from transformers import pipeline
 
-#title
-st.title("Easy OCR - Extract Text from Images")
+st.title('Milestone 2: Sentiment Analyser')
+st.write('*Note: it can take up to 30 seconds to run the app.*')
 
-#subtitle
-st.markdown("## Optical Character Recognition - Using `easyocr`, `streamlit` -  hosted on 🤗 Spaces")
+form = st.form(key='sentiment-form')
+user_input = form.text_area('Enter your text')
+submit = form.form_submit_button('Submit')
 
-st.markdown("Link to the app - [image-to-text-app on 🤗 Spaces](https://huggingface.co/spaces/aj567051/firstPlayground)")
+if submit:
+    classifier = pipeline("sentiment-analysis")
+    result = classifier(user_input)[0]
+    label = result['label']
+    score = result['score']
 
-#image uploader
-image = st.file_uploader(label = "Upload your image here",type=['png','jpg','jpeg'])
-
-
-@st.cache_data
-def load_model(): 
-    reader = ocr.Reader(['en'],model_storage_directory='.')
-    return reader 
-
-reader = load_model() #load model
-
-if image is not None:
-
-    input_image = Image.open(image) #read image
-    st.image(input_image) #display image
-
-    with st.spinner("🤖 AI is at Work! "):
-        
-
-        result = reader.readtext(np.array(input_image))
-
-        result_text = [] #empty list for results
-
-
-        for text in result:
-            result_text.append(text[1])
-
-        st.write(result_text)
-    #st.success("Here you go!")
-    st.balloons()
-else:
-    st.write("Upload an Image")
-
-st.caption("Made with ❤️ by @1littlecoder. Credits to 🤗 Spaces for Hosting this ")
+    if label == 'POSITIVE':
+        st.success(f'{label} sentiment (score: {score})')
+    else:
+        st.error(f'{label} sentiment (score: {score})')
