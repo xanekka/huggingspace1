@@ -1,14 +1,17 @@
 import streamlit as st
 from transformers import pipeline
 
-with st.form("my_form"):
-   st.write("Inside the form")
-   slider_val = st.slider("Form slider")
-   checkbox_val = st.checkbox("Form checkbox")
+form = st.form(string='inside the form')
+user_input = form.text_area('Enter your text')
+submit = form.form_submit_button('Submit')
 
-   # Every form must have a submit button.
-   submitted = st.form_submit_button("Submit")
-   if submitted:
-       st.write("slider", slider_val, "checkbox", checkbox_val)
+if submit:
+    classifier = pipeline("sentiment-analysis")
+    result = classifier(user_input)[0]
+    label = result['label']
+    score = result['score']
 
-st.write("Outside the form")
+    if label == 'POSITIVE':
+        st.success(f'{label} sentiment (score: {score})')
+    else:
+        st.error(f'{label} sentiment (score: {score})')
