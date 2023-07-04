@@ -1,5 +1,5 @@
 import streamlit as st
-import streamlit_ext as set
+import streamlit_ext as ste
 from transformers import pipeline
 
 st.title('Sentiment Analyser App')
