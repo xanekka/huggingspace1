@@ -1,17 +1,18 @@
 import streamlit as st
-from transformers import pipeline
+import streamlit_ext as ste
 
-form = st.form(string='inside the form')
-user_input = form.text_area('Enter your text')
-submit = form.form_submit_button('Submit')
+from datetime import time, datetime, date
 
-if submit:
-    classifier = pipeline("sentiment-analysis")
-    result = classifier(user_input)[0]
-    label = result['label']
-    score = result['score']
+option = ste.selectbox(
+    "How would you like to be contacted?",
+    range(100),
+    key="selectbox",
+)
 
-    if label == 'POSITIVE':
-        st.success(f'{label} sentiment (score: {score})')
-    else:
-        st.error(f'{label} sentiment (score: {score})')
+st.write("You selected:", option)
+
+d = ste.date_input("When's your birthday", date(2019, 7, 6), key="date_input")
+st.write("Your birthday is:", d)
+
+t = ste.time_input("Set an alarm for", time(8, 45), key="time_input")
+st.write("Alarm is set for", t)
