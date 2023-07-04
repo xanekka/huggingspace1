@@ -15,7 +15,7 @@ st.markdown("Link to the app - [image-to-text-app on 🤗 Spaces](https://huggin
 image = st.file_uploader(label = "Upload your image here",type=['png','jpg','jpeg'])
 
 
-@st.cache
+@st.cache_data
 def load_model(): 
     reader = ocr.Reader(['en'],model_storage_directory='.')
     return reader 
